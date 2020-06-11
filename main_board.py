@@ -8,7 +8,7 @@ board = [
 ]
 
 players = ('X', 'O')
-currentPlayer = 0
+currentPlayer = random.randint(0,1)
 ai = 1
 human = 0
 # 0 -> human ......... 1-> ai
@@ -138,11 +138,11 @@ def draw():
     elif currentPlayer == ai and res == 0:
         bestmove()
 
-    background(255)
+    background(0)
     if res==2:
         stroke(Color(255,0,102))
     else:
-        stroke(0)
+        stroke(Color(0,255,153))
     line((w, 0), (w, height))
     line((w*2, 0), (w*2, height))
     line((0, h), (width, h))
@@ -156,9 +156,9 @@ def draw():
             # print(win_index)
 
             if res == 1 and f'{j}{i}' in win_index:
-                stroke(Color(0, 0, 255))
+                stroke(Color(0, 100, 255))
             else:
-                stroke(0)
+                stroke(Color(0,255,153))
 
             if spot == players[1]:
                 no_fill()
