@@ -7,7 +7,6 @@ board = [
     ['', '', '']
 ]
 
-available = []
 players = ('X', 'O')
 currentPlayer = 0
 ai = 1
@@ -22,26 +21,16 @@ h = height/3
 
 def setup():
     size(width, height)
-    for i in range(3):
-        for j in range(3):
-            available.append((j, i))
+    
 
 
-def nextTurn(i, j):
-    global available, currentPlayer
-    if board[i][j] == "":
-        available.remove((i, j))
-        board[i][j] = players[currentPlayer]
-        currentPlayer = int(not currentPlayer)
-
-
-win_index = []
+scores = {'X': -1, 'O': 1, 'tie': 0}
 
 
 def wincheck():
     global win_index
-    res = 0
-    match = None
+    res = 2
+    match = 'tie'
     for i in range(3):
         if board[0][i] == board[1][i] == board[2][i] != '':
             win_index = [f'0{i}', f'1{i}', f'2{i}']
@@ -63,10 +52,72 @@ def wincheck():
         res = 1
         match = board[2][0]
         return res, match
-    if len(available) == 0:
-        res = 2
+    for i in range(3):
+        for j in range(3):
+            if board[i][j]=='':
+                res=0
+                match=None
+                break
         # return res, match
     return res, match
+
+
+def minimax(depth, toMaxi):
+    global board
+    res, match = wincheck()
+    if res != 0:
+        return scores[match]
+
+    if toMaxi:
+        bestscore = -10**9
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == '':
+                    board[i][j] = players[ai]
+                    score = minimax(depth+1, False)
+                    board[i][j] = ''
+                    bestscore = max(score, bestscore)
+        return bestscore
+    else:
+        bestscore = 10**9
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == '':
+                    board[i][j] = players[human]
+                    score = minimax(depth+1, True)
+                    board[i][j] = ''
+                    bestscore = min(score, bestscore)
+        return bestscore
+
+
+def bestmove():
+    global board
+    '''
+    for every empty pos, put O their and call minimax and get score for that move
+    O paka au minimax pakeiki score update kare jadi seta higher
+    '''
+    bestscore = -10**9
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == '':
+                board[i][j] = players[ai]
+                score = minimax(0, False)
+                board[i][j] = ''
+                if score > bestscore:
+                    bestscore = score
+                    bi = i
+                    bj = j
+    nextTurn(bi, bj)
+
+
+def nextTurn(i, j):
+    global currentPlayer
+    if board[i][j] == "":
+        board[i][j] = players[currentPlayer]
+        currentPlayer = int(not currentPlayer)
+
+
+win_index = []
 
 
 def draw():
@@ -79,15 +130,19 @@ def draw():
         no_loop()
         # return
 
-    # user
-    if mouse_is_pressed:
-        i = floor(mouse_x/w)
-        j = floor(mouse_y/h)
-        nextTurn(j, i)
-    # ai
+    if currentPlayer == human and res == 0:
+        if mouse_is_pressed:
+            i = floor(mouse_x/w)
+            j = floor(mouse_y/h)
+            nextTurn(j, i)
+    elif currentPlayer == ai and res == 0:
+        bestmove()
 
     background(255)
-    stroke(0)
+    if res==2:
+        stroke(Color(255,0,102))
+    else:
+        stroke(0)
     line((w, 0), (w, height))
     line((w*2, 0), (w*2, height))
     line((0, h), (width, h))
@@ -100,7 +155,7 @@ def draw():
             stroke_weight(4)
             # print(win_index)
 
-            if f'{j}{i}' in win_index:
+            if res == 1 and f'{j}{i}' in win_index:
                 stroke(Color(0, 0, 255))
             else:
                 stroke(0)
