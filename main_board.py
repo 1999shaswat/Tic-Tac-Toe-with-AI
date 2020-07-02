@@ -24,7 +24,7 @@ def setup():
     
 
 
-scores = {'X': -1, 'O': 1, 'tie': 0}
+scores = {'X': -10, 'O': 10, 'tie': 0}
 
 
 def wincheck():
@@ -61,13 +61,11 @@ def wincheck():
         # return res, match
     return res, match
 
-
 def minimax(depth, toMaxi):
     global board
     res, match = wincheck()
     if res != 0:
-        return scores[match]
-
+        return scores[match]-(depth/10)
     if toMaxi:
         bestscore = -10**9
         for i in range(3):
