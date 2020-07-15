@@ -11,6 +11,13 @@ This project has two parts.
 
 [Wiki Link for Minimax Algorithm](https://en.wikipedia.org/wiki/Minimax)
 
+## Demo
+
+| Draw  | AI wins |
+| ------------- | ------------- |
+| ![](t2.gif)  | ![](t1.gif)  |
+
+
 ## FAQ
 
 ### How to run this on my System?
@@ -25,6 +32,9 @@ There are two files:
 `main_board.py` (Run this to play against AI)
 
 Click on any box in 3x3 grid to select that position for player marker and make the move.
+
+### How is first player chosen?
+It is chosen randomly.
 
 ### Why is the AI unbeatable?
 
