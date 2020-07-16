@@ -13,18 +13,20 @@ This project has two parts.
 
 ## Demo
 
-| Draw  | AI wins |
-| ------------- | ------------- |
-| ![](t2.gif)  | ![](t1.gif)  |
+### Draw
+![](t2.gif)
+
+### AI Wins
+![](t1.gif)  |
 
 
 ## FAQ
 
-### How to run this on my System?
+#### How to run this on my System?
 Since this uses python port of p5.js library, run `pip install p5` command in terminal to install p5.
 Then run the program.
 
-### How to use it?
+#### How to use it?
 There are two files:
 
 `main_board_h_vs_h.py` (Run this to play against human)
@@ -33,10 +35,10 @@ There are two files:
 
 Click on any box in 3x3 grid to select that position for player marker and make the move.
 
-### How is first player chosen?
+#### How is first player chosen?
 It is chosen randomly.
 
-### Why is the AI unbeatable?
+#### Why is the AI unbeatable?
 
 As in the implementation of minimax algorithm, the program looks through every move in the grid recursively and chooses the best move. So only two outcomes are possible, either the AI wins or a draw.
 
